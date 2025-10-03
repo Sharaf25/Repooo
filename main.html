@@ -432,4 +432,31 @@
                             <rect fill="#000" x="85" y="145" width="10" height="10"/>
                             <rect fill="#000" x="105" y="150" width="20" height="10"/>
                             <rect fill="#000" x="135" y="155" width="10" height="10"/>
-                            <rect fill="#000" x="155" y="
+                            <rect fill="#000" x="155" y="160" width="10" height="10"/>
+                            <rect fill="#000" x="170" y="155" width="10" height="15"/>
+                        </svg>
+                    </div>
+                    <p class="qr-help">
+                        Use the <a href="#">Steam Mobile App</a> to sign in via QR code
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleSignIn() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                alert('Please enter both username and password');
+                return;
+            }
+            
+            // This is a demo - in a real app, you'd send credentials to a server
+            alert('Sign in attempted for user: ' + username);
+        }
+    </script>
+</body>
+</html>
