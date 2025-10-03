@@ -1,435 +1,169 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+import { useState } from 'react';
 
-        body {
-            font-family: "Motiva Sans", Arial, sans-serif;
-            background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
-            color: #c7d5e0;
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
+export default function SteamLogin() {
+  const [accountName, setAccountName] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(true);
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23172a3a" width="1200" height="800"/></svg>');
-            opacity: 0.3;
-            z-index: 0;
-        }
+  const handleSignIn = () => {
+    console.log('Account Name:', accountName);
+    console.log('Password:', password);
+    console.log('Remember Me:', rememberMe);
+    alert(`Signing in as: ${accountName}`);
+  };
 
-        .header {
-            background: #171a21;
-            padding: 12px 0;
-            position: relative;
-            z-index: 10;
-        }
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSignIn();
+    }
+  };
 
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+  return (
+    <div className="min-h-screen relative overflow-hidden" style={{
+      background: 'linear-gradient(135deg, #1b2838 0%, #2a475e 100%)',
+      fontFamily: '"Motiva Sans", Arial, sans-serif'
+    }}>
+      {/* Background pattern overlay */}
+      <div className="absolute inset-0 opacity-30" style={{
+        backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1200 800\'%3E%3Crect fill=\'%23172a3a\' width=\'1200\' height=\'800\'/%3E%3C/svg%3E")',
+        backgroundSize: 'cover'
+      }} />
 
-        .logo-nav {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: #fff;
-            border-radius: 50%;
-        }
-
-        .logo-text {
-            color: #fff;
-            font-size: 26px;
-            font-weight: 300;
-            letter-spacing: 3px;
-        }
-
-        .nav {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav a {
-            color: #b8b6b4;
-            text-decoration: none;
-            font-size: 14px;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
-
-        .nav a:first-child {
-            color: #66c0f4;
-        }
-
-        .nav a:hover {
-            color: #fff;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .install-btn {
-            background: #5c7e10;
-            color: #d2e885;
-            padding: 8px 16px;
-            border-radius: 2px;
-            text-decoration: none;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .login-link {
-            color: #b8b6b4;
-            text-decoration: none;
-            font-size: 12px;
-        }
-
-        .subnav {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px 0;
-            position: relative;
-            z-index: 9;
-        }
-
-        .subnav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            gap: 30px;
-        }
-
-        .subnav-item {
-            color: #b8b6b4;
-            text-decoration: none;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .search-container {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-box {
-            background: rgba(0, 0, 0, 0.3);
-            border: none;
-            padding: 8px 12px;
-            color: #fff;
-            width: 300px;
-            font-size: 13px;
-        }
-
-        .search-btn {
-            background: #00a2ff;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            color: #fff;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 80px auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .signin-box {
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
-            backdrop-filter: blur(20px);
-            padding: 60px;
-            border-radius: 4px;
-        }
-
-        h1 {
-            color: #fff;
-            font-size: 42px;
-            font-weight: 300;
-            margin-bottom: 60px;
-        }
-
-        .signin-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-        }
-
-        .signin-form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-label {
-            color: #66c0f4;
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-        }
-
-        .input-wrapper {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            background: #32414f;
-            border: none;
-            padding: 12px 40px 12px 12px;
-            color: #fff;
-            font-size: 16px;
-            border-radius: 2px;
-        }
-
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            outline: none;
-            background: #3d5468;
-        }
-
-        .input-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
-            background: #7c7c7c;
-            border-radius: 2px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 20px 0 30px 0;
-            cursor: pointer;
-        }
-
-        .checkbox {
-            width: 18px;
-            height: 18px;
-            background: #417a9b;
-            border-radius: 2px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 14px;
-        }
-
-        .remember-me label {
-            color: #b8b6b4;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .signin-btn {
-            background: linear-gradient(to bottom, #47bfff 5%, #1b8dc7 95%);
-            border: none;
-            color: #fff;
-            padding: 16px;
-            font-size: 18px;
-            font-weight: 300;
-            border-radius: 2px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .signin-btn:hover {
-            background: linear-gradient(to bottom, #66ccff 5%, #2896d1 95%);
-        }
-
-        .help-link {
-            color: #8f98a0;
-            text-align: center;
-            font-size: 13px;
-            text-decoration: none;
-            border-bottom: 1px solid #8f98a0;
-            display: inline-block;
-            align-self: center;
-        }
-
-        .qr-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .qr-label {
-            color: #66c0f4;
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .qr-code {
-            width: 220px;
-            height: 220px;
-            background: #fff;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        .qr-help {
-            color: #8f98a0;
-            text-align: center;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .qr-help a {
-            color: #66c0f4;
-            text-decoration: none;
-            border-bottom: 1px solid #66c0f4;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="header-content">
-            <div class="logo-nav">
-                <a href="#" class="logo">
-                    <div class="logo-icon"></div>
-                    <span class="logo-text">STEAM</span>
-                </a>
-                <nav class="nav">
-                    <a href="#">STORE</a>
-                    <a href="#">COMMUNITY</a>
-                    <a href="#">ABOUT</a>
-                    <a href="#">SUPPORT</a>
-                </nav>
-            </div>
-            <div class="header-right">
-                <a href="#" class="install-btn">⬇ Install Steam</a>
-                <a href="#" class="login-link">login</a>
-                <span class="login-link">|</span>
-                <a href="#" class="login-link">language ▾</a>
-            </div>
+      {/* Header */}
+      <header style={{ background: '#171a21' }} className="relative z-10">
+        <div className="max-w-[1400px] mx-auto px-5 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-10">
+            <a href="#" className="flex items-center gap-2.5 no-underline">
+              <div className="w-10 h-10 bg-white rounded-full" />
+              <span className="text-white text-[26px] font-light" style={{ letterSpacing: '3px' }}>STEAM</span>
+            </a>
+            <nav className="flex gap-8">
+              <a href="#" className="no-underline text-sm uppercase transition-colors" style={{ color: '#66c0f4' }}>STORE</a>
+              <a href="#" className="no-underline text-sm uppercase transition-colors" style={{ color: '#b8b6b4' }}>COMMUNITY</a>
+              <a href="#" className="no-underline text-sm uppercase transition-colors" style={{ color: '#b8b6b4' }}>ABOUT</a>
+              <a href="#" className="no-underline text-sm uppercase transition-colors" style={{ color: '#b8b6b4' }}>SUPPORT</a>
+            </nav>
+          </div>
+          <div className="flex items-center gap-5">
+            <a href="#" className="px-4 py-2 rounded-sm text-xs flex items-center gap-1.5 no-underline" style={{ 
+              background: '#5c7e10',
+              color: '#d2e885'
+            }}>
+              ⬇ Install Steam
+            </a>
+            <a href="#" className="text-xs no-underline" style={{ color: '#b8b6b4' }}>login</a>
+            <span className="text-xs" style={{ color: '#b8b6b4' }}>|</span>
+            <a href="#" className="text-xs no-underline" style={{ color: '#b8b6b4' }}>language ▾</a>
+          </div>
         </div>
-    </div>
+      </header>
 
-    <div class="subnav">
-        <div class="subnav-content">
-            <span class="subnav-item">Browse ▾</span>
-            <span class="subnav-item">Recommendations ▾</span>
-            <span class="subnav-item">Categories ▾</span>
-            <span class="subnav-item">Ways to Play ▾</span>
-            <span class="subnav-item">Special Sections ▾</span>
-            <div class="search-container">
-                <input type="text" class="search-box" placeholder="Search the store">
-                <button class="search-btn">🔍</button>
-            </div>
+      {/* Sub Navigation */}
+      <div className="relative z-9" style={{ background: 'rgba(0, 0, 0, 0.3)' }}>
+        <div className="max-w-[1400px] mx-auto px-5 py-3 flex items-center gap-8">
+          <span className="text-[13px] cursor-pointer" style={{ color: '#b8b6b4' }}>Browse ▾</span>
+          <span className="text-[13px] cursor-pointer" style={{ color: '#b8b6b4' }}>Recommendations ▾</span>
+          <span className="text-[13px] cursor-pointer" style={{ color: '#b8b6b4' }}>Categories ▾</span>
+          <span className="text-[13px] cursor-pointer" style={{ color: '#b8b6b4' }}>Ways to Play ▾</span>
+          <span className="text-[13px] cursor-pointer" style={{ color: '#b8b6b4' }}>Special Sections ▾</span>
+          <div className="ml-auto flex">
+            <input 
+              type="text" 
+              placeholder="Search the store" 
+              className="border-none px-3 py-2 text-white w-[300px] text-[13px] focus:outline-none"
+              style={{ background: 'rgba(0, 0, 0, 0.3)' }}
+            />
+            <button className="px-4 py-2 text-white cursor-pointer border-none" style={{ background: '#00a2ff' }}>🔍</button>
+          </div>
         </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-[1100px] mx-auto px-5 relative z-1" style={{ marginTop: '80px' }}>
+        <div className="p-[60px] rounded" style={{
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100%)',
+          backdropFilter: 'blur(20px)'
+        }}>
+          <h1 className="text-white text-[42px] font-light mb-[60px]">Sign in</h1>
+          
+          <div className="max-w-[450px]">
+            <label className="block text-xs uppercase mb-3" style={{ 
+              color: '#66c0f4',
+              letterSpacing: '1px'
+            }}>
+              SIGN IN WITH ACCOUNT NAME
+            </label>
+            <div className="relative mb-5">
+              <input
+                type="text"
+                value={accountName}
+                onChange={(e) => setAccountName(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="w-full border-none px-3 py-3 text-white text-base rounded-sm focus:outline-none"
+                style={{
+                  background: '#32414f',
+                  paddingRight: '40px'
+                }}
+              />
+              <div className="absolute right-3 w-5 h-5 rounded-sm" style={{ 
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: '#7c7c7c'
+              }} />
+            </div>
+
+            <label className="block text-xs uppercase mb-3" style={{ 
+              color: '#66c0f4',
+              letterSpacing: '1px'
+            }}>
+              PASSWORD
+            </label>
+            <div className="relative mb-5">
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="w-full border-none px-3 py-3 text-white text-base rounded-sm focus:outline-none"
+                style={{ background: '#32414f' }}
+              />
+            </div>
+
+            <div 
+              className="flex items-center gap-2 cursor-pointer" 
+              style={{ margin: '20px 0 30px 0' }}
+              onClick={() => setRememberMe(!rememberMe)}
+            >
+              <div className="w-[18px] h-[18px] rounded-sm flex items-center justify-center text-white text-sm" style={{
+                background: '#417a9b'
+              }}>
+                {rememberMe && '✓'}
+              </div>
+              <label className="text-sm cursor-pointer" style={{ color: '#b8b6b4' }}>Remember me</label>
+            </div>
+
+            <button
+              onClick={handleSignIn}
+              className="w-full border-none text-white px-4 py-4 text-lg font-light rounded-sm cursor-pointer mb-5 transition-all"
+              style={{
+                background: 'linear-gradient(to bottom, #47bfff 5%, #1b8dc7 95%)',
+                letterSpacing: '1px'
+              }}
+            >
+              Sign in
+            </button>
+            
+            <div className="text-center">
+              <a href="#" className="text-[13px] no-underline inline-block" style={{ 
+                color: '#8f98a0',
+                borderBottom: '1px solid #8f98a0'
+              }}>
+                Help, I can't sign in
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="container">
-        <div class="signin-box">
-            <h1>Sign in</h1>
-            <div class="signin-content">
-                <div class="signin-form">
-                    <label class="form-label">SIGN IN WITH ACCOUNT NAME</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="username" placeholder="">
-                        <div class="input-icon"></div>
-                    </div>
-
-                    <label class="form-label">PASSWORD</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="password" placeholder="">
-                    </div>
-
-                    <div class="remember-me">
-                        <div class="checkbox">✓</div>
-                        <label>Remember me</label>
-                    </div>
-
-                    <button class="signin-btn" onclick="handleSignIn()">Sign in</button>
-                    <a href="#" class="help-link">Help, I can't sign in</a>
-                </div>
-
-                <div class="qr-section">
-                    <div class="qr-label">OR SIGN IN WITH QR</div>
-                    <div class="qr-code">
-                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <rect fill="#000" x="0" y="0" width="200" height="200"/>
-                            <rect fill="#fff" x="10" y="10" width="180" height="180"/>
-                            <!-- QR code pattern -->
-                            <rect fill="#000" x="20" y="20" width="50" height="50"/>
-                            <rect fill="#fff" x="30" y="30" width="30" height="30"/>
-                            <rect fill="#000" x="35" y="35" width="20" height="20"/>
-                            
-                            <rect fill="#000" x="130" y="20" width="50" height="50"/>
-                            <rect fill="#fff" x="140" y="30" width="30" height="30"/>
-                            <rect fill="#000" x="145" y="35" width="20" height="20"/>
-                            
-                            <rect fill="#000" x="20" y="130" width="50" height="50"/>
-                            <rect fill="#fff" x="30" y="140" width="30" height="30"/>
-                            <rect fill="#000" x="35" y="145" width="20" height="20"/>
-                            
-                            <!-- Random QR pattern -->
-                            <rect fill="#000" x="80" y="25" width="10" height="10"/>
-                            <rect fill="#000" x="100" y="25" width="10" height="10"/>
-                            <rect fill="#000" x="85" y="40" width="10" height="10"/>
-                            <rect fill="#000" x="75" y="55" width="10" height="10"/>
-                            <rect fill="#000" x="95" y="55" width="10" height="10"/>
-                            <rect fill="#000" x="115" y="55" width="10" height="10"/>
-                            <rect fill="#000" x="80" y="75" width="30" height="10"/>
-                            <rect fill="#000" x="120" y="80" width="10" height="30"/>
-                            <rect fill="#000" x="140" y="90" width="10" height="20"/>
-                            <rect fill="#000" x="160" y="85" width="10" height="10"/>
-                            <rect fill="#000" x="170" y="100" width="10" height="10"/>
-                            <rect fill="#000" x="80" y="95" width="10" height="20"/>
-                            <rect fill="#000" x="95" y="100" width="10" height="10"/>
-                            <rect fill="#000" x="75" y="120" width="20" height="10"/>
-                            <rect fill="#000" x="110" y="125" width="10" height="10"/>
-                            <rect fill="#000" x="130" y="120" width="10" height="20"/>
-                            <rect fill="#000" x="150" y="130" width="30" height="10"/>
-                            <rect fill="#000" x="85" y="145" width="10" height="10"/>
-                            <rect fill="#000" x="105" y="150" width="20" height="10"/>
-                            <rect fill="#000" x="135" y="155" width="10" height="10"/>
-                            <rect fill="#000" x="155" y="
+  );
+}
